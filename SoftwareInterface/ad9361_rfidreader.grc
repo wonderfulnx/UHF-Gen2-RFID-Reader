@@ -1,0 +1,903 @@
+options:
+  parameters:
+    author: Xin Na
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: ad9361_rfidreader
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: AD9361 TX RX RFIDReader
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 36.0]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: SSBnXTsamp
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: (6, 1)
+    label: SSBnXTsamp
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '0.01'
+    stop: '0.25'
+    value: '0.02'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1376, 24.0]
+    rotation: 0
+    state: true
+- name: SSKp
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: (5, 1)
+    label: SSKp
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0.5'
+    step: '0.1'
+    stop: '5.0'
+    value: '2.7'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1240, 24.0]
+    rotation: 0
+    state: true
+- name: SSdoo
+  id: variable_qtgui_range
+  parameters:
+    comment: "The three range parameters are for symbol synchronizer inside\nreader\
+      \ receiver processing:\n - SSdoo: Damping factor of the loop filter.\n - SSKp:\
+      \  Timing error detector gain.\n - SSBnXTsamp: Loop bandwidth (Bn) normalized\
+      \ by the sample rate (Tsamp).\nTuning of these three parameter is critical to\
+      \ signal demodulation.\n - First, damping factor is usually set to 1 and will\
+      \ generally work. \n    Usually there is no need to tune it.\n - Second, SSBnXTsamp\
+      \ parameter should usually be within (0, 0.1),\n    it should always be greater\
+      \ than 0. This parameter defines the\n    expected drifting value, and should\
+      \ be larger in high BLF scenarios.\n    A good empirical value would be 0.02\
+      \ for low BLF and 0.06 for 640kHz BLF. \n - Third, SSKp should also be positive,\
+      \ with a default value of 2.7. This\n    value defines the gain of timing error\
+      \ in loop filter. A smaller SSKp\n    means a higher gain of timing error. A\
+      \ good empirical value would\n    be 2.7 for low BLF and 1.6~1.8 for 640kHz\
+      \ BLF, we also suggest\n    tuning this parameter yourself if the default does\
+      \ not work well."
+    gui_hint: (4, 1)
+    label: SSdoo
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0.5'
+    step: '0.1'
+    stop: '2.0'
+    value: '1.0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1120, 24.0]
+    rotation: 0
+    state: true
+- name: center_freq
+  id: variable
+  parameters:
+    comment: ''
+    value: 915e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [832, 172.0]
+    rotation: 0
+    state: true
+- name: record_btn
+  id: variable_qtgui_toggle_switch
+  parameters:
+    cellalignment: '1'
+    comment: GUI Record Switch
+    gui_hint: (7, 1)
+    initPressed: 'False'
+    label: Toggle On to Record Data
+    outputmsgname: value
+    position: '3'
+    pressed: '1'
+    released: '0'
+    switchOffBackground: gray
+    switchOnBackground: green
+    type: int
+    value: '0'
+    verticalalignment: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1528, 1040.0]
+    rotation: 0
+    state: enabled
+- name: rx0dma_selector
+  id: variable_qtgui_chooser
+  parameters:
+    comment: ''
+    gui_hint: (1, 1)
+    label: Rx0 DMA Selection
+    label0: ''
+    label1: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    labels: '["Rx to RFID sys", "Rx on to RFID sys", "Rx Symbol Sync Output", "Decode
+      Result"]'
+    num_opts: '0'
+    option0: '0'
+    option1: '1'
+    option2: '2'
+    option3: '3'
+    option4: '4'
+    options: '[1, 2, 3, 4]'
+    orient: Qt.QVBoxLayout
+    type: int
+    value: '4'
+    widget: combo_box
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1584, 16.0]
+    rotation: 0
+    state: enabled
+- name: rx1dma_selector
+  id: variable_qtgui_chooser
+  parameters:
+    comment: ''
+    gui_hint: (2, 1)
+    label: Rx1 DMA Selection
+    label0: ''
+    label1: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    labels: '["Rx to RFID sys", "Rx on to RFID sys", "Rx Symbol Sync Output", "Decode
+      Result"]'
+    num_opts: '0'
+    option0: '0'
+    option1: '1'
+    option2: '2'
+    option3: '3'
+    option4: '4'
+    options: '[1, 2, 3, 4]'
+    orient: Qt.QVBoxLayout
+    type: int
+    value: '1'
+    widget: combo_box
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1768, 16.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: 'Set this value to 8 * BLF of RFID BLF.
+
+      This is the actual sample rate of our model,
+
+      althrough it runs at 61.44MHz clock.'
+    value: 0.32e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [664, 172.0]
+    rotation: 0
+    state: true
+- name: uri_ctx
+  id: variable
+  parameters:
+    comment: The IP address for zed+ad9361 device
+    value: '"ip:192.168.20.2"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [664, 52.0]
+    rotation: 0
+    state: true
+- name: ad9361_reader_config
+  id: epy_module
+  parameters:
+    alias: ''
+    comment: 'The ad9361 SDR and reader configuration
+
+      SDR Includes sampling rate, RF bandwidth, gain, etc.
+
+      Reader includes symbol sync calculation function.
+
+      sampling rate set to 61.44Msps.'
+    source_code: "# this module will be imported in the into your flowgraph\n\nconfig_list\
+      \ = [\n\"out_altvoltage0_RX_LO_frequency=915000000\",\n\"out_altvoltage1_TX_LO_frequency=915000000\"\
+      ,\n\"in_voltage_sampling_frequency=61440000\",\n\"out_voltage_sampling_frequency=61440000\"\
+      ,\n\"in_voltage_rf_bandwidth=32000000\",\n\"out_voltage_rf_bandwidth=32000000\"\
+      ,\n\"in_voltage0_gain_control_mode=manual\",\n\"in_voltage1_gain_control_mode=manual\"\
+      ,\n\"in_voltage0_hardwaregain=5\",\n\"in_voltage1_hardwaregain=0\",\n\"out_voltage0_hardwaregain=0\"\
+      ,\n\"out_voltage1_hardwaregain=-80\",\n\"in_voltage_quadrature_tracking_en=0\"\
+      ,\n\"in_voltage_bb_dc_offset_tracking_en=0\",\n\"in_voltage_rf_dc_offset_tracking_en=0\"\
+      \n]\n\ndef SSPiLoopConstants(SSBnXTsamp, SSdoo, SSKp):\n    d = dict()\n   \
+      \ SSth = SSBnXTsamp / (SSdoo + 0.25 / SSdoo)\n    SSd  = 1 + 2 * SSdoo * SSth\
+      \ + SSth ** 2\n    SSK0 = -1\n    d['K1'] = 4 * SSdoo * (SSth/SSd) * (1 / (SSKp*SSK0))\n\
+      \    d['K2'] = 4 *   (SSth**2 / SSd)   * (1 / (SSKp*SSK0))\n    return d\n"
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [664, 320.0]
+    rotation: 0
+    state: true
+- name: analog_sig_source_x_0
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '1'
+    comment: 'The sampling rate of tx can be set very
+
+      low without affecting system performance,
+
+      but it can''t be deleted.'
+    freq: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: 0.32e6
+    showports: 'False'
+    type: short
+    waveform: analog.GR_CONST_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [704, 560.0]
+    rotation: 0
+    state: enabled
+- name: blocks_file_sink_1_0
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: 'Use this in Windows:
+
+      "./signals/rxdma" if record_btn == 1 else "NUL"
+
+      Use this in Linux
+
+      "./signals/rxdma" if record_btn == 1 else "/dev/null"'
+    file: '"./signals/rxdma" if record_btn == 1 else "NUL"'
+    type: short
+    unbuffered: 'False'
+    vlen: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1304, 820.0]
+    rotation: 0
+    state: enabled
+- name: blocks_float_to_complex_0
+  id: blocks_float_to_complex
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1024, 1072.0]
+    rotation: 180
+    state: enabled
+- name: blocks_float_to_complex_0_0
+  id: blocks_float_to_complex
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1024, 1208.0]
+    rotation: 180
+    state: enabled
+- name: blocks_short_to_float_0
+  id: blocks_short_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    scale: '32768'
+    vlen: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1304, 1028.0]
+    rotation: 0
+    state: true
+- name: blocks_streams_to_vector_0
+  id: blocks_streams_to_vector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_streams: '4'
+    type: short
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1024, 824.0]
+    rotation: 0
+    state: true
+- name: blocks_vector_to_streams_0
+  id: blocks_vector_to_streams
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_streams: '4'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1304, 1104.0]
+    rotation: 180
+    state: true
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
+      \ GRC will instantiate the first class it finds\nto get ports and parameters\
+      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
+      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
+      from gnuradio import gr\nimport pmt\n\n\nclass overflow_detect(gr.sync_block):\n\
+      \    \"\"\"Embedded Python Block example - a simple multiply const\"\"\"\n\n\
+      \    def __init__(self):  # only default arguments here\n        \"\"\"arguments\
+      \ to this function show up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n\
+      \            self,\n            name='Overflow Detector',   # will show up in\
+      \ GRC\n            in_sig=[np.int32],\n            out_sig=None,\n        )\n\
+      \        self.logger = gr.logger(self.alias())\n        # self.message_port_register_out(pmt.intern('overflow_msg'))\n\
+      \        \n        # if an attribute with the same name as a parameter is found,\n\
+      \        # a callback is registered (properties work, too).\n        # self.example_param\
+      \ = example_param\n\n    def work(self, input_items, output_items):\n      \
+      \  # print(input_items)\n        for val in input_items[0]:\n            if\
+      \ (val & 4):\n                self.logger.warn(\"Overflow!\")\n            \
+      \    # self.message_port_pub(pmt.intern('overflow_msg'), pmt.intern('Overflow!'))\n\
+      \                break\n        return len(input_items[0])\n        \n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('Overflow Detector', 'overflow_detect', [], [('0', 'int', 1)], [],
+      'Embedded Python Block example - a simple multiply const', [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1648, 672.0]
+    rotation: 0
+    state: true
+- name: epy_block_1
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
+      \ GRC will instantiate the first class it finds\nto get ports and parameters\
+      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
+      \ them are required to have default values!\n\"\"\"\n\nfrom gnuradio import\
+      \ gr\nimport pmt\n\nclass blk(gr.basic_block):  # other base classes are basic_block,\
+      \ decim_block, interp_block\n    def __init__(self, example_param=1.0):  # only\
+      \ default arguments here\n        \"\"\"arguments to this function show up as\
+      \ parameters in GRC\"\"\"\n        gr.basic_block.__init__(\n            self,\n\
+      \            name='Make Dict Msg for IIO Attr ',\n            in_sig=None,\n\
+      \            out_sig=None\n        )\n        self.message_port_register_in(pmt.intern('in'))\n\
+      \        self.set_msg_handler(pmt.intern('in'), self.handle_msg)\n        self.message_port_register_out(pmt.intern('out'))\n\
+      \n    def handle_msg(self, msg):\n        key_pmt = pmt.car(msg)\n        val_pmt\
+      \ = pmt.cdr(msg)\n        d_msg = pmt.make_dict()\n        d_msg = pmt.dict_add(d_msg,\
+      \ key_pmt, val_pmt)\n        self.message_port_pub(pmt.intern('out'), d_msg)\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    example_param: '1.0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('Make Dict Msg for IIO Attr ', 'blk', [('example_param', '1.0')],
+      [('in', 'message', 1)], [('out', 'message', 1)], 'arguments to this function
+      show up as parameters in GRC', [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 1128.0]
+    rotation: 180
+    state: enabled
+- name: iio_attr_sink_0
+  id: iio_attr_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    attr_type: '1'
+    channel: ''
+    comment: Custom IP control
+    device: axi-rfidreader
+    output: 'False'
+    uri: uri_ctx
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 516.0]
+    rotation: 0
+    state: true
+- name: iio_attr_sink_0_0
+  id: iio_attr_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    attr_type: '4'
+    channel: ''
+    comment: ''
+    device: '"cf-ad9361-lpc"'
+    output: 'False'
+    uri: uri_ctx
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1600, 500.0]
+    rotation: 0
+    state: enabled
+- name: iio_attr_source_0
+  id: iio_attr_source
+  parameters:
+    address: int("0x80000088",0)
+    affinity: ''
+    alias: ''
+    attr_type: '3'
+    attribute: ''
+    channel: ''
+    comment: Monitor Overflow
+    device: cf-ad9361-lpc
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    output: 'False'
+    samples_per_update: '16'
+    type: '3'
+    update_interval_ms: '100'
+    uri: uri_ctx
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1328, 616.0]
+    rotation: 0
+    state: true
+- name: iio_attr_updater_0
+  id: iio_attr_updater
+  parameters:
+    affinity: ''
+    alias: ''
+    attr: loopback_delay
+    comment: 'Loopback delay
+
+      in 61.44MHz clock'
+    interval: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    value: '104'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 692.0]
+    rotation: 0
+    state: true
+- name: iio_attr_updater_0_0
+  id: iio_attr_updater
+  parameters:
+    affinity: ''
+    alias: ''
+    attr: ssk1
+    comment: Symbol Sync PI Loop parameter K1
+    interval: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    value: str(round(ad9361_reader_config.SSPiLoopConstants(SSBnXTsamp, SSdoo, SSKp)['K1']
+      * 32768))
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 836.0]
+    rotation: 0
+    state: true
+- name: iio_attr_updater_0_0_0_1
+  id: iio_attr_updater
+  parameters:
+    affinity: ''
+    alias: ''
+    attr: tx_mag
+    comment: 'Tx magnitude
+
+      The model accepts signed fixed point type, sfix16_En15.
+
+      So here the input is a int16.'
+    interval: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    value: str(round(-0.8*32768))
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 260.0]
+    rotation: 0
+    state: true
+- name: iio_attr_updater_0_0_0_1_0
+  id: iio_attr_updater
+  parameters:
+    affinity: ''
+    alias: ''
+    attr: q
+    comment: Q value in EPC protocol
+    interval: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 420.0]
+    rotation: 0
+    state: true
+- name: iio_attr_updater_0_0_1
+  id: iio_attr_updater
+  parameters:
+    affinity: ''
+    alias: ''
+    attr: tx_sel
+    comment: '1 for Loopback PIE
+
+      2 for RFID signal'
+    interval: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    value: '2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [384, 220.0]
+    rotation: 180
+    state: true
+- name: iio_attr_updater_0_0_1_0
+  id: iio_attr_updater
+  parameters:
+    affinity: ''
+    alias: ''
+    attr: rx_sel
+    comment: '1 for Capture High rate signal
+
+      2 for Receive Low rate signal'
+    interval: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    value: '2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [384, 364.0]
+    rotation: 180
+    state: true
+- name: iio_attr_updater_0_0_2
+  id: iio_attr_updater
+  parameters:
+    affinity: ''
+    alias: ''
+    attr: rx0dma_sel
+    comment: ''
+    interval: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    value: str(rx0dma_selector)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [376, 652.0]
+    rotation: 180
+    state: true
+- name: iio_attr_updater_0_0_3
+  id: iio_attr_updater
+  parameters:
+    affinity: ''
+    alias: ''
+    attr: rx1dma_sel
+    comment: "rx_sel == 1\n  1 for Tx Signal\n  2 for Rx channel 0\n  3 for Rx channel\
+      \ 1\nrx_sel == 2\n  1 for Rx to RFID sys\n  2 for Rx on signal input to RFID\
+      \ sys\n  3 for Rx symbol sync output\n  4 for Rx Decode Result"
+    interval: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    value: str(rx1dma_selector)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [376, 748.0]
+    rotation: 180
+    state: true
+- name: iio_attr_updater_0_0_4
+  id: iio_attr_updater
+  parameters:
+    affinity: ''
+    alias: ''
+    attr: str(int('0x80000088', 16))
+    comment: Use to set initial overflow bit
+    interval: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    value: str(int('0x6', 16))
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1328, 500.0]
+    rotation: 0
+    state: enabled
+- name: iio_attr_updater_0_1
+  id: iio_attr_updater
+  parameters:
+    affinity: ''
+    alias: ''
+    attr: dual_target
+    comment: Dual target in EPC protocol
+    interval: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 556.0]
+    rotation: 0
+    state: true
+- name: iio_attr_updater_0_2
+  id: iio_attr_updater
+  parameters:
+    affinity: ''
+    alias: ''
+    attr: ssk2
+    comment: Symbol Sync PI Loop parameter K2
+    interval: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    value: str(round(ad9361_reader_config.SSPiLoopConstants(SSBnXTsamp, SSdoo, SSKp)['K2']
+      * 32768))
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 964.0]
+    rotation: 0
+    state: true
+- name: iio_device_sink_0
+  id: iio_device_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    buffer_size: '65536'
+    channels: '["voltage0", "voltage1"]'
+    comment: 'Tx chain for ad9361
+
+      Data is not actually used but don''t delete this.'
+    cyclic: 'False'
+    device: cf-ad9361-dds-core-lpc
+    device_phy: ad9361-phy
+    interpolation: '1'
+    len_tag_key: ''
+    params: '[]'
+    uri: uri_ctx
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [992, 540.0]
+    rotation: 0
+    state: enabled
+- name: iio_device_source_0
+  id: iio_device_source
+  parameters:
+    affinity: ''
+    alias: ''
+    buffer_size: '65536'
+    channels: '["voltage0", "voltage1", "voltage2", "voltage3"]'
+    comment: Rx chain for ad9361
+    decimation: '1'
+    device: cf-ad9361-lpc
+    device_phy: ad9361-phy
+    len_tag_key: packet_len
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    params: ad9361_reader_config.config_list
+    uri: uri_ctx
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [704, 824.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_sink_x_0
+  id: qtgui_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    bw: samp_rate
+    comment: ''
+    fc: '0'
+    fftsize: '2048'
+    gui_hint: (8, 1)
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"ad9361 channel 0"'
+    plotconst: 'True'
+    plotfreq: 'True'
+    plottime: 'True'
+    plotwaterfall: 'True'
+    rate: '10'
+    showports: 'False'
+    showrf: 'False'
+    type: complex
+    wintype: window.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [712, 1040.0]
+    rotation: 180
+    state: enabled
+- name: qtgui_sink_x_0_0
+  id: qtgui_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    bw: samp_rate
+    comment: ''
+    fc: '0'
+    fftsize: '2048'
+    gui_hint: (9, 1)
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"ad9361 channel 1"'
+    plotconst: 'True'
+    plotfreq: 'True'
+    plottime: 'True'
+    plotwaterfall: 'True'
+    rate: '10'
+    showports: 'False'
+    showrf: 'False'
+    type: complex
+    wintype: window.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [712, 1176.0]
+    rotation: 180
+    state: enabled
+- name: reset_ip_msg_push_button
+  id: variable_qtgui_msg_push_button
+  parameters:
+    comment: ''
+    gui_hint: (3, 1)
+    label: Reset RFID Reader IP (Restart after click)
+    msgName: reset_ip
+    relBackgroundColor: default
+    relFontColor: default
+    type: string
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 1012.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [analog_sig_source_x_0, '0', iio_device_sink_0, '0']
+- [analog_sig_source_x_0, '0', iio_device_sink_0, '1']
+- [blocks_float_to_complex_0, '0', qtgui_sink_x_0, '0']
+- [blocks_float_to_complex_0_0, '0', qtgui_sink_x_0_0, '0']
+- [blocks_short_to_float_0, '0', blocks_vector_to_streams_0, '0']
+- [blocks_streams_to_vector_0, '0', blocks_file_sink_1_0, '0']
+- [blocks_streams_to_vector_0, '0', blocks_short_to_float_0, '0']
+- [blocks_vector_to_streams_0, '0', blocks_float_to_complex_0, '0']
+- [blocks_vector_to_streams_0, '1', blocks_float_to_complex_0, '1']
+- [blocks_vector_to_streams_0, '2', blocks_float_to_complex_0_0, '0']
+- [blocks_vector_to_streams_0, '3', blocks_float_to_complex_0_0, '1']
+- [epy_block_1, out, iio_attr_sink_0, attr]
+- [iio_attr_source_0, '0', epy_block_0, '0']
+- [iio_attr_updater_0, out, iio_attr_sink_0, attr]
+- [iio_attr_updater_0_0, out, iio_attr_sink_0, attr]
+- [iio_attr_updater_0_0_0_1, out, iio_attr_sink_0, attr]
+- [iio_attr_updater_0_0_0_1_0, out, iio_attr_sink_0, attr]
+- [iio_attr_updater_0_0_1, out, iio_attr_sink_0, attr]
+- [iio_attr_updater_0_0_1_0, out, iio_attr_sink_0, attr]
+- [iio_attr_updater_0_0_2, out, iio_attr_sink_0, attr]
+- [iio_attr_updater_0_0_3, out, iio_attr_sink_0, attr]
+- [iio_attr_updater_0_0_4, out, iio_attr_sink_0_0, attr]
+- [iio_attr_updater_0_1, out, iio_attr_sink_0, attr]
+- [iio_attr_updater_0_2, out, iio_attr_sink_0, attr]
+- [iio_device_source_0, '0', blocks_streams_to_vector_0, '0']
+- [iio_device_source_0, '1', blocks_streams_to_vector_0, '1']
+- [iio_device_source_0, '2', blocks_streams_to_vector_0, '2']
+- [iio_device_source_0, '3', blocks_streams_to_vector_0, '3']
+- [reset_ip_msg_push_button, pressed, epy_block_1, in]
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0

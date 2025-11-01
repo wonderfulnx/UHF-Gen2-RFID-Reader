@@ -1,0 +1,6 @@
+# GNURadio generated py file
+*.py
+__pycache__/
+
+# Signals
+signals/rxdma
