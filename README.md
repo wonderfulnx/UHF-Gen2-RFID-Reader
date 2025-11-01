@@ -32,7 +32,7 @@ The FPGA based reader can run on an Zedboard + FMCOMMS2/3 platform, with a custo
 
 4. If your suite doesn't work, you can continue with the [AD-FMCOMMS2/3/4/5-EBZ Zynq and ZED Quick Start Guide](https://wiki.analog.com/resources/eval/user-guides/ad-fmcomms2-ebz/quickstart/zynq) by using the official `BOOT.BIN`, `devicetree.dtb`, and `uImage` files. Then you can try some simple streaming application with iio-oscilloscope or GNURadio in your host machine. Make sure the hardware setup works fine in its original form.
 5. We use the `TX1A` and `RX1A` port for the transmit and receive chain, therefore you will need two antennas. Another important thing to note is that the FMCOMMS2/3 board has an output power of only 0dBm, so a **power amplifier** is needed for long range reading. One example of deployment is:
-![Deployment Example](Deployment.JPG){:height="80%" width="80%"}
+![Deployment Example](Deployment.JPG)
 
 ### 3. Software Interface Guide
 
